@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { Plus, Pencil, Trash2, Search, ImagePlus } from 'lucide-react';
+import { Plus, Pencil, Trash2, Search, ImagePlus, Loader2 } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -46,6 +46,8 @@ export default function ProductsPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -103,6 +105,74 @@ export default function ProductsPage() {
     }
   };
 
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    const fileType = file.type.split('/')[1];
+    const validTypes = ['jpeg', 'jpg', 'png', 'webp'];
+    if (!validTypes.includes(fileType)) {
+      toast({
+        title: 'Invalid file type',
+        description: 'Please upload a JPEG, PNG or WebP image',
+        variant: 'destructive'
+      });
+      return;
+    }
+
+    // Validate file size (5MB limit)
+    if (file.size > 5 * 1024 * 1024) {
+      toast({
+        title: 'File too large',
+        description: 'Please upload an image smaller than 5MB',
+        variant: 'destructive'
+      });
+      return;
+    }
+
+    setIsUploading(true);
+    try {
+      // Create a unique file name
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Date.now()}.${fileExt}`;
+      const filePath = `product-images/${fileName}`;
+
+      // Upload image to Supabase Storage
+      const { error: uploadError, data } = await supabase.storage
+        .from('products')
+        .upload(filePath, file, {
+          cacheControl: '3600',
+          upsert: false
+        });
+
+      if (uploadError) throw uploadError;
+
+      // Get public URL
+      const { data: { publicUrl } } = supabase.storage
+        .from('products')
+        .getPublicUrl(filePath);
+
+      // Update form data with image URL
+      setFormData(prev => ({ ...prev, image_url: publicUrl }));
+      setImagePreview(publicUrl);
+
+      toast({
+        title: 'Success',
+        description: 'Image uploaded successfully',
+      });
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to upload image',
+        variant: 'destructive'
+      });
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsDialogOpen(false);
@@ -124,6 +194,16 @@ export default function ProductsPage() {
       };
 
       if (editingProduct) {
+        // If updating and image changed, delete old image
+        if (editingProduct.image_url && editingProduct.image_url !== formData.image_url) {
+          const oldPath = editingProduct.image_url.split('/').pop();
+          if (oldPath) {
+            await supabase.storage
+              .from('products')
+              .remove([`product-images/${oldPath}`]);
+          }
+        }
+
         const { error } = await supabase
           .from('products')
           .update(productData)
@@ -154,6 +234,7 @@ export default function ProductsPage() {
         category_id: '',
         stock_quantity: ''
       });
+      setImagePreview(null);
       setEditingProduct(null);
       fetchProducts();
     } catch (error) {
@@ -171,6 +252,19 @@ export default function ProductsPage() {
     if (!confirm('Are you sure you want to delete this product?')) return;
 
     try {
+      // Get product details to get image URL
+      const product = products.find(p => p.id === id);
+      if (product?.image_url) {
+        const imagePath = product.image_url.split('/').pop();
+        if (imagePath) {
+          // Delete image from storage
+          await supabase.storage
+            .from('products')
+            .remove([`product-images/${imagePath}`]);
+        }
+      }
+
+      // Delete product from database
       const { error } = await supabase
         .from('products')
         .delete()
@@ -269,13 +363,27 @@ export default function ProductsPage() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">Image URL</label>
-                <Input
-                  type="url"
-                  value={formData.image_url}
-                  onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
-                  placeholder="https://example.com/image.jpg"
-                />
+                <label className="block text-sm font-medium mb-1">Product Image</label>
+                <div className="mt-1 flex items-center gap-4">
+                  <Input
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp"
+                    onChange={handleImageUpload}
+                    className="flex-1"
+                  />
+                  {isUploading && (
+                    <Loader2 className="h-5 w-5 animate-spin text-primary" />
+                  )}
+                </div>
+                {imagePreview && (
+                  <div className="mt-2">
+                    <img
+                      src={imagePreview}
+                      alt="Preview"
+                      className="h-32 w-32 object-cover rounded-lg"
+                    />
+                  </div>
+                )}
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1">Stock Quantity *</label>
@@ -357,6 +465,7 @@ export default function ProductsPage() {
                           category_id: product.category_id || '',
                           stock_quantity: product.stock_quantity.toString()
                         });
+                        setImagePreview(product.image_url);
                         setIsDialogOpen(true);
                       }}
                     >
