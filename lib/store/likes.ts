@@ -10,6 +10,22 @@ interface LikesStore {
   initializeLikes: () => Promise<void>;
 }
 
+// Create a custom storage object that handles both browser and non-browser environments
+const customStorage = {
+  getItem: (name: string) => {
+    if (!isBrowser()) return null;
+    return localStorage.getItem(name);
+  },
+  setItem: (name: string, value: string) => {
+    if (!isBrowser()) return;
+    localStorage.setItem(name, value);
+  },
+  removeItem: (name: string) => {
+    if (!isBrowser()) return;
+    localStorage.removeItem(name);
+  },
+};
+
 export const useLikesStore = create<LikesStore>()(
   persist(
     (set, get) => ({
@@ -82,7 +98,7 @@ export const useLikesStore = create<LikesStore>()(
     }),
     {
       name: 'likes-storage',
-      storage: createJSONStorage(() => (isBrowser() ? localStorage : null)),
+      storage: createJSONStorage(() => customStorage),
       skipHydration: true,
     }
   )

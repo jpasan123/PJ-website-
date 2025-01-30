@@ -3,8 +3,17 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Wallet, LineChart, Shield, Users } from 'lucide-react';
 import { useTranslation } from '@/lib/hooks/useTranslation';
+import { translations } from '@/lib/i18n/translations';
 
-const benefits = [
+type TranslationKey = keyof typeof translations.en;
+
+interface Benefit {
+  title: TranslationKey;
+  description: TranslationKey;
+  icon: React.ElementType;
+}
+
+const benefits: Benefit[] = [
   {
     title: 'benefits.smart_banking.title',
     description: 'benefits.smart_banking.description',

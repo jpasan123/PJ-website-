@@ -1,51 +1,37 @@
 'use client';
 
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Calendar, Clock, MapPin, Users } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { Users, Award, Globe, TrendingUp } from 'lucide-react';
 
 export default function EventsPage() {
   const { toast } = useToast();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const stats = [
+    { label: 'Years of Experience', value: '15+', icon: Award },
+    { label: 'Global Customers', value: '10k+', icon: Globe },
+    { label: 'Team Members', value: '200+', icon: Users },
+    { label: 'Growth Rate', value: '97%', icon: TrendingUp },
+  ];
 
   const handleRegister = () => {
-    toast({
-      title: "Registration successful!",
-      description: "You have been registered for the event.",
-    });
+    setIsLoading(true);
+    setTimeout(() => {
+      toast({
+        title: "Registration successful!",
+        description: "You have been registered for the event.",
+      });
+      setIsLoading(false);
+    }, 1000);
   };
-
-  const events = [
-    {
-      title: 'Digital Banking Summit 2024',
-      date: 'March 15, 2024',
-      time: '10:00 AM - 4:00 PM',
-      location: 'Virtual Event',
-      image: 'https://picsum.photos/seed/event1/800/400',
-      spots: '500 spots available'
-    },
-    {
-      title: 'SME Growth Workshop',
-      date: 'March 20, 2024',
-      time: '2:00 PM - 5:00 PM',
-      location: 'London Business Center',
-      image: 'https://picsum.photos/seed/event2/800/400',
-      spots: '100 spots available'
-    },
-    {
-      title: 'Tech Innovation Conference',
-      date: 'April 5, 2024',
-      time: '9:00 AM - 6:00 PM',
-      location: 'Singapore Convention Center',
-      image: 'https://picsum.photos/seed/event3/800/400',
-      spots: '300 spots available'
-    }
-  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
-      <motion.div
+      <motion.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
@@ -63,44 +49,21 @@ export default function EventsPage() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {events.map((event, index) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {stats.map((stat, index) => (
             <motion.div
-              key={event.title}
+              key={stat.label}
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.3 + index * 0.1 }}
             >
-              <Card className="overflow-hidden hover:shadow-lg transition-shadow">
-                <div 
-                  className="h-48 bg-cover bg-center"
-                  style={{ backgroundImage: `url(${event.image})` }}
-                />
-                <CardHeader>
-                  <CardTitle className="text-xl">{event.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div className="flex items-center text-gray-600">
-                      <Calendar className="h-5 w-5 mr-2" />
-                      <span>{event.date}</span>
-                    </div>
-                    <div className="flex items-center text-gray-600">
-                      <Clock className="h-5 w-5 mr-2" />
-                      <span>{event.time}</span>
-                    </div>
-                    <div className="flex items-center text-gray-600">
-                      <MapPin className="h-5 w-5 mr-2" />
-                      <span>{event.location}</span>
-                    </div> <boltAction type="file" filePath="app/events/page.tsx">
-                    <div className="flex items-center text-gray-600">
-                      <Users className="h-5 w-5 mr-2" />
-                      <span>{event.spots}</span>
-                    </div>
-                    <Button className="w-full mt-4" onClick={handleRegister}>
-                      Register Now
-                    </Button>
+              <Card className="hover:shadow-lg transition-shadow">
+                <CardContent className="p-6 text-center">
+                  <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                    <stat.icon className="h-8 w-8 text-primary" />
                   </div>
+                  <h3 className="text-xl font-semibold mb-2">{stat.label}</h3>
+                  <p className="text-3xl font-bold text-primary">{stat.value}</p>
                 </CardContent>
               </Card>
             </motion.div>
@@ -113,12 +76,17 @@ export default function EventsPage() {
           transition={{ delay: 0.6 }}
           className="mt-16 bg-primary text-white rounded-2xl p-12 text-center"
         >
-          <h2 className="text-3xl font-bold mb-6">Host Your Own Event</h2>
-          <p className="text-xl mb-8 max-w-2xl mx-auto">
-            Interested in hosting a business event or workshop? Partner with us to reach our community.
+          <h2 className="text-3xl font-bold mb-6">Join Our Next Event</h2>
+          <p className="text-xl mb-8">
+            Be part of our growing community of successful businesses
           </p>
-          <Button variant="secondary" size="lg">
-            Contact Event Team
+          <Button 
+            variant="secondary" 
+            size="lg" 
+            onClick={handleRegister}
+            disabled={isLoading}
+          >
+            {isLoading ? 'Registering...' : 'Register Now'}
           </Button>
         </motion.div>
       </motion.div>

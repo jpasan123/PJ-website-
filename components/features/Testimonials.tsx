@@ -3,8 +3,18 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Quote } from 'lucide-react';
 import { useTranslation } from '@/lib/hooks/useTranslation';
+import { translations } from '@/lib/i18n/translations';
 
-const testimonials = [
+type TranslationKey = keyof typeof translations.en;
+
+interface Testimonial {
+  quote: TranslationKey;
+  author: TranslationKey;
+  position: TranslationKey;
+  image: string;
+}
+
+const testimonials: Testimonial[] = [
   {
     quote: 'testimonials.quotes.1.text',
     author: 'testimonials.quotes.1.author',
@@ -41,7 +51,7 @@ export default function Testimonials() {
         </div>
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           {testimonials.map((testimonial) => (
-            <Card key={testimonial.author} className="bg-white">
+            <Card key={testimonial.quote} className="bg-white">
               <CardContent className="p-6">
                 <Quote className="h-8 w-8 text-primary/20 mb-4" />
                 <p className="text-gray-600 mb-6">{t(testimonial.quote)}</p>

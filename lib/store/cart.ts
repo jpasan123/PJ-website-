@@ -24,6 +24,22 @@ interface CartStore {
   clearCart: () => void;
 }
 
+// Create a custom storage object that handles both browser and non-browser environments
+const customStorage = {
+  getItem: (name: string) => {
+    if (!isBrowser()) return null;
+    return localStorage.getItem(name);
+  },
+  setItem: (name: string, value: string) => {
+    if (!isBrowser()) return;
+    localStorage.setItem(name, value);
+  },
+  removeItem: (name: string) => {
+    if (!isBrowser()) return;
+    localStorage.removeItem(name);
+  },
+};
+
 export const useCartStore = create<CartStore>()(
   persist(
     (set, get) => ({
@@ -65,7 +81,7 @@ export const useCartStore = create<CartStore>()(
     }),
     {
       name: 'cart-storage',
-      storage: createJSONStorage(() => (isBrowser() ? localStorage : null)),
+      storage: createJSONStorage(() => customStorage),
       skipHydration: true,
     }
   )

@@ -2,29 +2,64 @@
 
 import { motion } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
-import { Laptop, Printer, Shield, HeadphonesIcon } from 'lucide-react';
+import { Laptop, Printer, Shield, Network, Code, Armchair, Database, Shirt, UtensilsCrossed } from 'lucide-react';
 import { useTranslation } from '@/lib/hooks/useTranslation';
+import { translations } from '@/lib/i18n/translations';
+import Link from 'next/link';
 
-const categories = [
+type TranslationKey = keyof typeof translations.en;
+
+interface Category {
+  name: string;
+  title: TranslationKey;
+  items: TranslationKey;
+  icon: React.ElementType;
+  description: string;
+  itemCount: string;
+  image: string;
+  featured: string[];
+}
+
+const categories: Category[] = [
   {
+    name: 'Electronics',
     title: 'categories.computers',
+    items: 'categories.computers_count',
     icon: Laptop,
-    items: 'categories.computers_count'
+    description: 'Computers, laptops, and tablets',
+    itemCount: '150+ items',
+    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800',
+    featured: ['Business Laptops', 'Tablets', 'Monitors', 'Accessories']
   },
   {
+    name: 'Office Equipment',
     title: 'categories.office',
+    items: 'categories.office_count',
     icon: Printer,
-    items: 'categories.office_count'
+    description: 'Printers, scanners, and copiers',
+    itemCount: '100+ items',
+    image: 'https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?auto=format&fit=crop&w=800',
+    featured: ['Printers', 'Scanners', 'Copiers', 'Paper Supplies']
   },
   {
+    name: 'Security Systems',
     title: 'categories.security',
+    items: 'categories.security_count',
     icon: Shield,
-    items: 'categories.security_count'
+    description: 'CCTV, access control, and alarms',
+    itemCount: '80+ items',
+    image: 'https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&w=800',
+    featured: ['CCTV Systems', 'Access Control', 'Alarms', 'Security Cameras']
   },
   {
-    title: 'categories.accessories',
-    icon: HeadphonesIcon,
-    items: 'categories.accessories_count'
+    name: 'Networking',
+    title: 'categories.computers',
+    items: 'categories.computers_count',
+    icon: Network,
+    description: 'Routers, switches, and network equipment',
+    itemCount: '120+ items',
+    image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=800',
+    featured: ['Routers', 'Switches', 'Network Cards', 'Cables']
   }
 ];
 
@@ -37,7 +72,7 @@ export default function Categories() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ delay: 0.2 }}
           className="text-center mb-16"
         >
           <h2 className="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent sm:text-4xl">
@@ -48,21 +83,14 @@ export default function Categories() {
           </p>
         </motion.div>
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
-          {categories.map((category, index) => (
-            <motion.div
-              key={category.title}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-            >
-              <Card className="card-hover">
-                <CardContent className="p-6 text-center">
-                  <category.icon className="h-12 w-12 mx-auto mb-4 text-primary group-hover:scale-110 transition-transform" />
-                  <h3 className="text-xl font-semibold mb-2">{t(category.title)}</h3>
-                  <p className="text-gray-600">{t(category.items)}</p>
-                </CardContent>
-              </Card>
-            </motion.div>
+          {categories.map((category) => (
+            <Card key={category.name} className="card-hover">
+              <CardContent className="p-6 text-center">
+                <category.icon className="h-12 w-12 mx-auto mb-4 text-primary group-hover:scale-110 transition-transform" />
+                <h3 className="text-xl font-semibold mb-2">{t(category.title)}</h3>
+                <p className="text-gray-600">{t(category.items)}</p>
+              </CardContent>
+            </Card>
           ))}
         </div>
       </div>
