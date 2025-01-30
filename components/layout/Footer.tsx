@@ -147,7 +147,7 @@ export default function Footer() {
             <div className="flex items-center gap-4">
               <Link href="/" className="flex items-center">
                 <Building2 className="h-8 w-8 text-primary" />
-                <span className="ml-2 text-xl font-bold text-white">Commercial SMB</span>
+                <span className="ml-2 text-xl font-bold text-white">SwiftCart UK</span>
               </Link>
               <div className="flex space-x-4">
                 <Link href="#" className="text-gray-400 hover:text-primary transition-colors">
@@ -165,7 +165,7 @@ export default function Footer() {
               </div>
             </div>
             <p className="text-sm text-gray-400">
-              © {new Date().getFullYear()} Commercial SMB. All rights reserved.
+              © {new Date().getFullYear()} SwiftCart UK. All rights reserved.
             </p>
           </div>
         </div>

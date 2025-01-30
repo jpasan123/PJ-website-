@@ -49,7 +49,7 @@ export default function Benefits() {
           className="text-center mb-16"
         >
           <h2 className="text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-4">
-            Why Choose PJ Web
+            Why Choose SwiftCart UK
           </h2>
           <p className="text-xl text-gray-600">
             Your Trusted Web Development Partner

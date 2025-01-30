@@ -4,16 +4,17 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    /* Base colors remain unchanged */
+    --background: 220 33% 98%;
     --foreground: 222.2 84% 4.9%;
-    --primary: 217 91% 60%;
+    --primary: 224 76% 48%;
     --primary-foreground: 210 40% 98%;
-    --secondary: 32 95% 44%;
+    --secondary: 280 84% 54%;
     --secondary-foreground: 210 40% 98%;
     --success: 142 76% 36%;
     --success-foreground: 210 40% 98%;
-    --accent: 45 93% 47%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 316 70% 50%;
+    --accent-foreground: 210 40% 98%;
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;
@@ -28,27 +29,159 @@
     --radius: 0.75rem;
   }
 
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 217 91% 60%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 32 95% 44%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 45 93% 47%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: var(--primary);
+  /* Add responsive font sizes */
+  html {
+    font-size: 16px;
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  @media (max-width: 640px) {
+    html {
+      font-size: 14px;
+    }
+  }
+
+  /* Add better touch targets for mobile */
+  @media (max-width: 640px) {
+    button, 
+    .button,
+    [role="button"],
+    input,
+    select,
+    textarea {
+      min-height: 44px;
+      padding: 0.5rem 1rem;
+    }
+  }
+
+  /* Improve text readability */
+  body {
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }
 
-/* Rest of the CSS remains unchanged */
+@layer components {
+  /* Responsive container classes */
+  .container-responsive {
+    @apply w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .section-padding {
+    @apply py-8 sm:py-12 md:py-16 lg:py-24;
+  }
+
+  /* Responsive grid layouts */
+  .grid-responsive {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8;
+  }
+
+  /* Responsive card layouts */
+  .card-responsive {
+    @apply flex flex-col h-full bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300;
+  }
+
+  /* Responsive text classes */
+  .text-heading {
+    @apply text-2xl sm:text-3xl md:text-4xl font-bold;
+  }
+
+  .text-subheading {
+    @apply text-lg sm:text-xl md:text-2xl font-semibold;
+  }
+
+  /* Responsive navigation */
+  .nav-link {
+    @apply px-2 py-1 sm:px-3 sm:py-2 text-sm sm:text-base hover:text-primary transition-colors;
+  }
+
+  /* Responsive buttons */
+  .button-responsive {
+    @apply px-4 py-2 sm:px-6 sm:py-3 rounded-lg text-sm sm:text-base font-medium transition-all;
+  }
+
+  /* Responsive form elements */
+  .input-responsive {
+    @apply w-full px-3 py-2 sm:py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent;
+  }
+
+  /* Responsive images */
+  .image-responsive {
+    @apply w-full h-auto object-cover rounded-lg;
+  }
+
+  /* Responsive spacing utilities */
+  .stack-vertical > * + * {
+    @apply mt-4 sm:mt-6 md:mt-8;
+  }
+
+  .stack-horizontal > * + * {
+    @apply ml-4 sm:ml-6 md:ml-8;
+  }
+}
+
+/* Media query breakpoints */
+@custom-media --mobile (max-width: 640px);
+@custom-media --tablet (min-width: 641px) and (max-width: 1024px);
+@custom-media --desktop (min-width: 1025px);
+
+/* Touch device optimizations */
+@media (hover: none) {
+  .hover\:shadow-lg:hover {
+    @apply shadow-none;
+  }
+
+  .hover\:scale-105:hover {
+    @apply transform-none;
+  }
+}
+
+/* Dark mode adjustments */
+.dark {
+  --background: 222.2 84% 4.9%;
+  --foreground: 210 40% 98%;
+  --card: 222.2 84% 4.9%;
+  --card-foreground: 210 40% 98%;
+  --popover: 222.2 84% 4.9%;
+  --popover-foreground: 210 40% 98%;
+  --primary: 217 91% 60%;
+  --primary-foreground: 222.2 47.4% 11.2%;
+  --secondary: 280 84% 54%;
+  --secondary-foreground: 210 40% 98%;
+  --muted: 217.2 32.6% 17.5%;
+  --muted-foreground: 215 20.2% 65.1%;
+  --accent: 316 70% 50%;
+  --accent-foreground: 210 40% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 217.2 32.6% 17.5%;
+  --input: 217.2 32.6% 17.5%;
+  --ring: var(--primary);
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
+  body {
+    print-color-adjust: exact;
+  }
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

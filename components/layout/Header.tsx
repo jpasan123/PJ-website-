@@ -104,7 +104,7 @@ export default function Header() {
           >
             <Link href="/" className="flex items-center">
               <Building2 className="h-8 w-8 text-primary" />
-              <span className="ml-2 text-xl font-bold text-primary">PJ Web</span>
+              <span className="ml-2 text-xl font-bold text-primary">SwiftCart UK</span>
             </Link>
           </motion.div>
 
