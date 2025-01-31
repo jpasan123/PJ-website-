@@ -137,7 +137,7 @@ export default function DealsPage() {
                     </Button>
                     <Link href={`/products/${product.id}`} className="flex-1">
                       <Button className="w-full">
-                        <Eye className="h-4 w-4 mr-2" />
+                        <Eye className="h-5 w-8 mr-4" />
                         View Details
                       </Button>
                     </Link>
