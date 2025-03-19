@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Menu, X, Building2, ShoppingCart, Search } from 'lucide-react';
@@ -27,12 +28,13 @@ const navigation = [
 ];
 
 export default function Header() {
+  const { toast } = useToast();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [session, setSession] = useState<any>(null);
+  const [logoError, setLogoError] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
-  const { toast } = useToast();
   const { items } = useCartStore();
   const { searchQuery, setSearchQuery } = useSearchStore();
   const supabase = createClientComponentClient();
@@ -103,8 +105,21 @@ export default function Header() {
             transition={{ type: "spring", stiffness: 400, damping: 10 }}
           >
             <Link href="/" className="flex items-center">
-              <Building2 className="h-8 w-8 text-primary" />
-              <span className="ml-2 text-xl font-bold text-primary">Trend Mart</span>
+              {logoError ? (
+                <Building2 className="h-8 w-8 text-primary" />
+              ) : (
+                <div className="relative h-12 w-40">
+                  <Image
+                    src="https://i.ibb.co/HDYVMphZ/Whats-App-Image-2025-03-19-at-15-21-58-bc540058.jpg"
+                    alt="Trend Mart Logo"
+                    fill
+                    className="object-contain rounded-md"
+                    onError={() => setLogoError(true)}
+                    priority
+                  />
+                </div>
+              )}
+              {/* <span className="ml-2 text-lg font-bold text-primary">Trend Mart</span> */}
             </Link>
           </motion.div>
 
@@ -206,78 +221,75 @@ export default function Header() {
           </div>
         </div>
 
-        {/* // In the mobile menu section, add CurrencySelector after LanguageSelector */}
-{/* Mobile Menu */}
-{isMenuOpen && (
-  <motion.div
-    initial={{ opacity: 0, y: -20 }}
-    animate={{ opacity: 1, y: 0 }}
-    exit={{ opacity: 0, y: -20 }}
-    transition={{ duration: 0.2 }}
-    className="md:hidden py-4"
-  >
-    <div className="flex flex-col space-y-4">
-      <form onSubmit={handleSearch} className="flex items-center">
-        <Input
-          type="search"
-          placeholder="Search products..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="flex-1"
-        />
-        <Button type="submit" variant="ghost" size="icon" className="ml-2">
-          <Search className="h-5 w-5" />
-        </Button>
-      </form>
+        {/* Mobile Menu */}
+        {isMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.2 }}
+            className="md:hidden py-4"
+          >
+            <div className="flex flex-col space-y-4">
+              <form onSubmit={handleSearch} className="flex items-center">
+                <Input
+                  type="search"
+                  placeholder="Search products..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="flex-1"
+                />
+                <Button type="submit" variant="ghost" size="icon" className="ml-2">
+                  <Search className="h-5 w-5" />
+                </Button>
+              </form>
 
-      {navigation.map((item) => (
-        <Link
-          key={item.name}
-          href={item.href}
-          className={`text-base font-medium px-2 py-1 ${
-            isActive(item.href)
-              ? 'text-primary'
-              : 'text-gray-700 hover:text-primary'
-          }`}
-          onClick={() => setIsMenuOpen(false)}
-        >
-          {item.name}
-        </Link>
-      ))}
+              {navigation.map((item) => (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className={`text-base font-medium px-2 py-1 ${
+                    isActive(item.href)
+                      ? 'text-primary'
+                      : 'text-gray-700 hover:text-primary'
+                  }`}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {item.name}
+                </Link>
+              ))}
 
-      <div className="py-2">
-        <LanguageSelector />
-      </div>
+              <div className="py-2">
+                <LanguageSelector />
+              </div>
 
-      {/* Add CurrencySelector here */}
-      <div className="py-2">
-        <CurrencySelector />
-      </div>
+              <div className="py-2">
+                <CurrencySelector />
+              </div>
 
-      <div className="flex flex-col space-y-2 pt-4">
-        <Link href="/cart">
-          <Button variant="outline" className="w-full relative">
-            <ShoppingCart className="h-5 w-5 mr-2" />
-            Cart
-            {cartItemCount > 0 && (
-              <span className="absolute top-0 right-0 -mt-2 -mr-2 bg-primary text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                {cartItemCount}
-              </span>
-            )}
-          </Button>
-        </Link>
-        {!session && (
-          <Link href="/auth/login">
-            <Button variant="default" className="w-full">
-              Get Started
-            </Button>
-          </Link>
+              <div className="flex flex-col space-y-2 pt-4">
+                <Link href="/cart">
+                  <Button variant="outline" className="w-full relative">
+                    <ShoppingCart className="h-5 w-5 mr-2" />
+                    Cart
+                    {cartItemCount > 0 && (
+                      <span className="absolute top-0 right-0 -mt-2 -mr-2 bg-primary text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                        {cartItemCount}
+                      </span>
+                    )}
+                  </Button>
+                </Link>
+                {!session && (
+                  <Link href="/auth/login">
+                    <Button variant="default" className="w-full">
+                      Get Started
+                    </Button>
+                  </Link>
+                )}
+              </div>
+            </div>
+          </motion.div>
         )}
-      </div>
-    </div>
-  </motion.div>
-)}
-
       </nav>
     </motion.header>
   );
