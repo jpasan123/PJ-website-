@@ -26,36 +26,17 @@ const config: Config = {
       },
     },
     extend: {
-      screens: {
-        'xs': '475px',
-        '3xl': '1920px',
-      },
-      spacing: {
-        '18': '4.5rem',
-        '112': '28rem',
-        '128': '32rem',
-        '144': '36rem',
-      },
-      fontSize: {
-        '2xs': ['0.625rem', { lineHeight: '0.75rem' }],
-        '3xl': ['1.875rem', { lineHeight: '2.25rem' }],
-        '4xl': ['2.25rem', { lineHeight: '2.5rem' }],
-        '5xl': ['3rem', { lineHeight: '1' }],
-        '6xl': ['3.75rem', { lineHeight: '1' }],
-        '7xl': ['4.5rem', { lineHeight: '1' }],
-        '8xl': ['6rem', { lineHeight: '1' }],
-        '9xl': ['8rem', { lineHeight: '1' }],
-      },
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
-      },
-      borderRadius: {
-        lg: 'var(--radius)',
-        md: 'calc(var(--radius) - 2px)',
-        sm: 'calc(var(--radius) - 4px)',
-      },
       colors: {
+        'brand': {
+          'green': '#b5d395',
+          'yellow': '#faba06',
+          'teal': '#009fab',
+          'gray': '#dad7cf',
+          'navy': '#033656',
+          'pink': '#d90662',
+          'orange': '#fb9203',
+          'cream': '#f1e6df',
+        },
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: {
@@ -89,6 +70,26 @@ const config: Config = {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
+      },
+      screens: {
+        'xs': '475px',
+        '3xl': '1920px',
+      },
+      spacing: {
+        '18': '4.5rem',
+        '112': '28rem',
+        '128': '32rem',
+        '144': '36rem',
+      },
+      fontSize: {
+        '2xs': ['0.625rem', { lineHeight: '0.75rem' }],
+        '3xl': ['1.875rem', { lineHeight: '2.25rem' }],
+        '4xl': ['2.25rem', { lineHeight: '2.5rem' }],
+        '5xl': ['3rem', { lineHeight: '1' }],
+        '6xl': ['3.75rem', { lineHeight: '1' }],
+        '7xl': ['4.5rem', { lineHeight: '1' }],
+        '8xl': ['6rem', { lineHeight: '1' }],
+        '9xl': ['8rem', { lineHeight: '1' }],
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',

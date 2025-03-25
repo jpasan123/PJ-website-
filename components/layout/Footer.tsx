@@ -114,7 +114,7 @@ export default function Footer() {
               </p>
               <p className="flex items-center gap-2">
                 <Mail className="h-4 w-4 text-primary" />
-                <span>support@commercialsmb.com</span>
+                <span>support@trendmart.com</span>
               </p>
             </div>
           </div>
@@ -147,7 +147,7 @@ export default function Footer() {
             <div className="flex items-center gap-4">
               <Link href="/" className="flex items-center">
                 <Building2 className="h-8 w-8 text-primary" />
-                <span className="ml-2 text-xl font-bold text-white">SwiftCart UK</span>
+                <span className="ml-2 text-xl font-bold text-white">TrendMart</span>
               </Link>
               <div className="flex space-x-4">
                 <Link href="#" className="text-gray-400 hover:text-primary transition-colors">
@@ -165,7 +165,7 @@ export default function Footer() {
               </div>
             </div>
             <p className="text-sm text-gray-400">
-              © {new Date().getFullYear()} SwiftCart UK. All rights reserved.
+              © {new Date().getFullYear()} TrendMart. All rights reserved.
             </p>
           </div>
         </div>
