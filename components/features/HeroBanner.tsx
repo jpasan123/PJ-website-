@@ -61,8 +61,8 @@ export default function HeroBanner() {
           transition={{ duration: 1 }}
           className="absolute inset-0 z-0"
         >
-          {/* Updated gradient overlay with lighter, more subtle colors */}
-          <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/70 via-purple-500/50 to-transparent z-10" />
+          {/* Updated gradient overlay with brand colors */}
+          <div className="absolute inset-0 bg-gradient-to-r from-brand-navy/80 via-brand-teal/60 to-transparent z-10" />
           <div className="absolute inset-0 bg-black/10 z-5" /> {/* Subtle darkening overlay */}
           <img
             src={images[currentIndex].url}
@@ -134,7 +134,7 @@ export default function HeroBanner() {
                 <Link href="/products">
                   <Button 
                     size="lg" 
-                    className="w-full sm:w-auto bg-white/90 backdrop-blur-sm text-indigo-600 hover:bg-white shadow-lg"
+                    className="w-full sm:w-auto bg-white/90 backdrop-blur-sm text-brand-navy hover:bg-white shadow-lg"
                   >
                     Shop Now
                     <ShoppingBag className="ml-2 h-5 w-5" />
@@ -148,14 +148,14 @@ export default function HeroBanner() {
                 transition={{ delay: 0.4 }}
               >
                 <Link href="/products">
-                  <Button 
+                    <Button 
                     size="lg" 
                     variant="outline" 
-                    className="w-full sm:w-auto border-white/80 text-white hover:bg-white/20 backdrop-blur-sm shadow-lg"
-                  >
-                    View Catalog
+                    className="w-full sm:w-auto backdrop-blur-sm"
+                    >
+                    <span className="opacity-100">View Catalog</span>
                     <ArrowRight className="ml-2 h-5 w-5" />
-                  </Button>
+                    </Button>
                 </Link>
               </motion.div>
             </div>

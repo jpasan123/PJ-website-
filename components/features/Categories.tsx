@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { Laptop, Printer, Shield, Network, Code, Armchair, Database, Shirt, UtensilsCrossed } from 'lucide-react';
 import { useTranslation } from '@/lib/hooks/useTranslation';
 import { translations } from '@/lib/i18n/translations';
@@ -75,7 +76,7 @@ export default function Categories() {
           transition={{ delay: 0.2 }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent sm:text-4xl">
+          <h2 className="text-3xl font-bold text-[#6B9B4E] sm:text-4xl">
             {t('categories.title')}
           </h2>
           <p className="mt-4 text-lg text-gray-600">
